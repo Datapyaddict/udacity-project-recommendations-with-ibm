@@ -13603,7 +13603,7 @@ VI. <a href="#conclusions">Extras &amp; Concluding</a></p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f1ffaaca588&gt;]], dtype=object)</pre>
+<pre>array([[&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f1c07d70438&gt;]], dtype=object)</pre>
 </div>
 
 </div>
@@ -14537,18 +14537,12 @@ Your top_20 looks like the solution list! Nice job.
     <span class="n">most_similar_users</span> <span class="o">=</span> <span class="n">user_item</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">user_item</span><span class="p">))</span>
     
     <span class="c1"># sort by similarity</span>
+    <span class="n">most_similar_users</span> <span class="o">=</span> <span class="n">most_similar_users</span><span class="p">[</span><span class="n">most_similar_users</span><span class="o">!=</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span>\
+        <span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">ordered_similarities</span> <span class="o">=</span> <span class="n">most_similar_users</span><span class="p">[</span><span class="n">most_similar_users</span><span class="o">!=</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>    
-    
-    <span class="c1"># create list of just the ids</span>
-
-    <span class="n">similar_users</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ordered_similarities</span><span class="p">:</span>
-        <span class="n">similar_users</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">most_similar_users</span><span class="p">[</span><span class="n">most_similar_users</span><span class="o">==</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
-    
     <span class="c1"># remove the own user&#39;s id</span>
-    <span class="n">most_similar_users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">similar_users</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">most_similar_users</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">most_similar_users</span> <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">user_id</span><span class="p">]</span>
+    <span class="n">most_similar_users</span> <span class="o">=</span> <span class="n">most_similar_users</span><span class="p">[</span><span class="n">most_similar_users</span><span class="o">.</span><span class="n">index</span> <span class="o">!=</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
     
     <span class="k">return</span> <span class="n">most_similar_users</span> <span class="c1"># return a list of the users in order from most to least similar</span>
         
@@ -14584,9 +14578,9 @@ Your top_20 looks like the solution list! Nice job.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The 10 most similar users to user 1 are: [3933, 23, 203, 131, 4201, 49, 3910, 2982, 256, 1897]
-The 5 most similar users to user 3933 are: [1, 3782, 203, 46, 5041]
-The 3 most similar users to user 46 are: [23, 4459, 2982]
+<pre>The 10 most similar users to user 1 are: [3933, 23, 3782, 4459, 203, 3870, 131, 46, 4201, 395]
+The 5 most similar users to user 3933 are: [1, 23, 3782, 203, 4459]
+The 3 most similar users to user 46 are: [4201, 3782, 23]
 </pre>
 </div>
 </div>
@@ -14620,8 +14614,6 @@ The 3 most similar users to user 46 are: [23, 4459, 2982]
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">article_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">article_id</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">article_ids</span><span class="p">)]</span><span class="o">.</span>\
         <span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-<span class="c1">#     df[&#39;rank&#39;] =  df.groupby(&#39;article_id&#39;)[&#39;title&#39;].rank(ascending=0,method=&#39;first&#39;)</span>
-<span class="c1">#     article_names = list(df[(df[&#39;rank&#39;] == 1.0) &amp; (df.article_id.isin(article_ids))].title)</span>
     
     <span class="k">return</span> <span class="n">article_names</span> <span class="c1"># Return the article names associated with list of article ids</span>
 
@@ -14677,26 +14669,30 @@ The 3 most similar users to user 46 are: [23, 4459, 2982]
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">most_familiar_users</span> <span class="o">=</span> <span class="n">find_similar_users</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
 
-    <span class="n">user_article_ids</span> <span class="o">=</span> <span class="n">get_user_articles</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">user_article_ids</span> <span class="o">=</span> <span class="n">get_user_articles</span><span class="p">(</span><span class="n">user_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">recs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+<span class="c1">#     recs = defaultdict(set)</span>
+    <span class="n">recs</span> <span class="o">=</span> <span class="p">[]</span>
     
     <span class="k">for</span> <span class="n">familiar_user</span> <span class="ow">in</span> <span class="n">most_familiar_users</span><span class="p">:</span>
         <span class="n">familiar_user_article</span> <span class="o">=</span> <span class="n">get_user_articles</span><span class="p">(</span><span class="n">familiar_user</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">rec_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">familiar_user_article</span><span class="p">,</span><span class="n">user_article_ids</span><span class="p">)</span>
+        <span class="n">rec_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">,</span><span class="n">recs</span><span class="p">)</span>
         <span class="n">rec_temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="n">user_id</span><span class="p">])</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">recs</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span> <span class="o">+</span> <span class="n">start</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">:</span>
             <span class="n">k</span> <span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
+            <span class="c1">#items are chosen arbitrarily</span>
             <span class="n">rec_temp</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">)</span>
-            <span class="n">recs</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span>
+            <span class="n">recs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span>
             <span class="k">break</span>
-
-    <span class="n">recs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="n">user_id</span><span class="p">])</span><span class="c1">#[:m]</span>
-
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">recs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">rec_temp</span><span class="p">)</span>
+ 
+       
     <span class="k">return</span> <span class="n">recs</span> <span class="c1"># return your recommendations for this user_id    </span>
 </pre></div>
 
@@ -14730,16 +14726,16 @@ The 3 most similar users to user 46 are: [23, 4459, 2982]
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;using brunel in ipython/jupyter notebooks&#39;,
- &#39;520    using notebooks with pixiedust for fast, flexi...\nName: title, dtype: object&#39;,
- &#39;spark 2.1 and job monitoring available in dsx&#39;,
- &#39;a visual explanation of the back propagation algorithm for neural networks&#39;,
+<pre>[&#39;modeling energy usage in new york city&#39;,
+ &#39;using bigdl in dsx for deep learning on spark&#39;,
  &#39;web picks (week of 4 september 2017)&#39;,
- &#39;visualising data the node.js way&#39;,
- &#39;machine learning exercises in python, part 1&#39;,
- &#39;apache spark lab, part 2: querying data&#39;,
- &#39;ml optimization using cognitive assistant&#39;,
- &#39;movie recommender system with spark machine learning&#39;]</pre>
+ &#39;twelve\xa0ways to color a map of africa using brunel&#39;,
+ &#39;get social with your notebooks in dsx&#39;,
+ &#39;machine learning for the enterprise&#39;,
+ &#39;using rstudio in ibm data science experience&#39;,
+ &#39;ml algorithm != learning machine&#39;,
+ &#39;programmatic evaluation using watson conversation&#39;,
+ &#39;visualize data with the matplotlib library&#39;]</pre>
 </div>
 
 </div>
@@ -14956,7 +14952,7 @@ The 3 most similar users to user 46 are: [23, 4459, 2982]
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>The top 10 recommendations for user 20 are the following article ids:
-{&#39;1162.0&#39;, &#39;1354.0&#39;, &#39;1351.0&#39;, &#39;1364.0&#39;, &#39;1170.0&#39;, &#39;1330.0&#39;, &#39;1368.0&#39;, &#39;1304.0&#39;, &#39;1160.0&#39;, &#39;1427.0&#39;}
+{&#39;1427.0&#39;, &#39;1368.0&#39;, &#39;1170.0&#39;, &#39;1364.0&#39;, &#39;1160.0&#39;, &#39;1162.0&#39;, &#39;1354.0&#39;, &#39;1330.0&#39;, &#39;1351.0&#39;, &#39;1304.0&#39;}
 
 The top 10 recommendations for user 20 are the following article names:
 [&#39;analyze accident reports on amazon emr spark&#39;, &#39;analyze energy consumption in buildings&#39;, &#39;apache spark lab, part 1: basic concepts&#39;, &#39;gosales transactions for logistic regression model&#39;, &#39;insights from new york car accident reports&#39;, &#39;model bike sharing data with spss&#39;, &#39;movie recommender system with spark machine learning&#39;, &#39;predicting churn with the spss random tree algorithm&#39;, &#39;putting a human face on machine learning&#39;, &#39;use xgboost, scikit-learn &amp; ibm watson machine learning apis&#39;]
@@ -16308,12 +16304,21 @@ The top 10 recommendations for user 20 are the following article names:
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>What can we conclude from the above results?</strong></p>
 <p>We can observe that the accuracy is increasing along with the number of latent features for the training set, while it is the opposite for the test set.
 This is an indication of overfitting and we should then opt for a low number of features.</p>
 <p>Let's notice that if we decrease the size of the training set to between 13000 and 28000 rows, we can see the accuracy in the test set is faring better than in the training set, on condition that the number of features remains low. From the above graph, we can notice that the ideal number of features is set around 40.</p>
-<p>The SVD method could provide better recommendations if the number of user ids and article ids common to both the training and test sets were more important. The test score could then be much more representative.</p>
-<p>In order to make better recommendations, we could complement with other techniques like collaborative filtering or content based recommendations to deal with new users or articles in the test set.</p>
-<p>As the recommendations are going online, we could use A/B testing to check if our new recommendations engine leads to more reads or ratings. We would assign a group of users to the current recommendations (the control group) and another group of users to the new recommendations and see the results in terms of ratings or click through rates.</p>
+<p><strong>Is accuracy a good metric to use here in this case? Does it provide us with a fair assessment of the model's performance?</strong></p>
+<p>Basically, because we have only predicted 0s or 1s in our recommendations, the accuracy metric may not be a good indicator of whether the intended user would read or like them. Ideally, we would have been better off using user ratings instead of interactions. As a consequence, a good accuracy with the metric we used doesn't mean we made good recommendations.</p>
+<p><strong>Is the current assessment framework robust enough to make conclusive results about the model?</strong></p>
+<p>Using the SVD matrix factorization comes with a substantial drawback : we can only make predictions if the users and articles in the test set are existing on the training set.
+We could complement SVD with other techniques like rank based recommendations to deal with new users or articles in the test set.</p>
+<p>In our example of training set size of 40000, we could only predict for 20 users, which is not enough and there were 662 users we couldn't predict for...</p>
+<p><strong>How could we validate the recommendations through A/B testing?</strong></p>
+<p>As the recommendations are going online, we could use A/B testing to check if our new recommendations engine leads to more reads, clicks or ratings.</p>
+<p>In the online experiment, we would use a cookie-based diversion, wherein the user will be proposed randomly the new recommendations based on our model (experiment group) or the latest articles (control group), and we would record whether or not they click on the links to the recommended articles.</p>
+<p>The number of clicks would be the evaluation metric. If we observe an increase of this metric for the experiment group using our recommendations, this would validate the new recommendation model. 
+The length of the experiment would depend on the statistical power required to validate the change in the recommendation model. Ex : if we observe that 10% of the control group tends to click on the pages of the most recent articles proposed, we could require a 12% for the experimental group.</p>
 
 </div>
 </div>
